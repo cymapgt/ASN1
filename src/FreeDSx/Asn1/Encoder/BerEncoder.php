@@ -41,7 +41,7 @@ class BerEncoder implements EncoderInterface
     /**
      * These types must have a non-zero length.
      */
-    protected const NON_ZERO_LENGTH = [
+    const NON_ZERO_LENGTH = [
         AbstractType::TAG_TYPE_BOOLEAN,
         AbstractType::TAG_TYPE_UTC_TIME,
         AbstractType::TAG_TYPE_GENERALIZED_TIME,
@@ -181,7 +181,7 @@ class BerEncoder implements EncoderInterface
      * @return AbstractType
      * @throws EncoderException
      */
-    protected function getDecodedType(?int $tagType, bool $isConstructed, $bytes, array $tagMap) : AbstractType
+    protected function getDecodedType(int $tagType = null, bool $isConstructed, $bytes, array $tagMap) : AbstractType
     {
         if ($tagType === null) {
             return new IncompleteType($bytes);
@@ -322,7 +322,7 @@ class BerEncoder implements EncoderInterface
      * @param bool $isConstructed
      * @throws EncoderException
      */
-    protected function validateDecodedTypeAttributes(int $length, int $tagType, bool $isConstructed) : void
+    protected function validateDecodedTypeAttributes(int $length, int $tagType, bool $isConstructed)
     {
         if ($length === 0 && in_array($tagType, self::NON_ZERO_LENGTH)) {
             throw new EncoderException(sprintf('Zero length is not permitted for tag %s.', $tagType));
@@ -391,7 +391,7 @@ class BerEncoder implements EncoderInterface
      * @param array $map
      * @return int|null
      */
-    protected function getTagType(int $tagNumber, int $tagClass, array $map) : ?int
+    protected function getTagType(int $tagNumber, int $tagClass, array $map)
     {
         if ($tagClass === AbstractType::TAG_CLASS_UNIVERSAL) {
             return $tagNumber;
@@ -985,7 +985,7 @@ class BerEncoder implements EncoderInterface
                 $length
             ));
         }
-
+        
         return $this->binaryToBitString($bytes, $length, $unused);
     }
 
@@ -1111,7 +1111,10 @@ class BerEncoder implements EncoderInterface
         $children = [];
 
         while ($bytes) {
-            list('type' => $type, 'bytes' => $bytes) = $this->decodeBytes($bytes, $tagMap);
+            //list('type' => $type, 'bytes' => $bytes) = $this->decodeBytes($bytes, $tagMap); Will not work in PHP <= 7.0
+            $decodedBytes = $this->decodeBytes($bytes, $tagMap);
+            $type = $decodedBytes['type'];
+            $bytes = $decodedBytes['bytes'];
             $children[] = $type;
         }
 

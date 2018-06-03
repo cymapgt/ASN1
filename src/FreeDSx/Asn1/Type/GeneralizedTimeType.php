@@ -31,7 +31,7 @@ class GeneralizedTimeType extends AbstractTimeType
      * c)  the characters in a) above followed by a string representing a local time differential, as specified in
      *     ISO 8601, without separators
      */
-    public const TIME_REGEX = '~^
+    const TIME_REGEX = '~^
         (\d\d\d\d)              # 1  - Year
         (\d\d)                  # 2  - Month
         (\d\d)                  # 3  - Day
@@ -44,7 +44,7 @@ class GeneralizedTimeType extends AbstractTimeType
         (Z|[\+\-]\d\d\d\d)?     # 11 - Timezone modifier (optional). It can either be a Z (UTC) or a time differential.
     $~x';
 
-    public const REGEX_MAP = [
+    const REGEX_MAP = [
         'hours' => 4,
         'minutes' => 6,
         'seconds' => 8,
@@ -76,7 +76,7 @@ class GeneralizedTimeType extends AbstractTimeType
     /**
      * {@inheritdoc}
      */
-    public function __construct(?\DateTime $dateTime = null, string $dateFormat = self::FORMAT_FRACTIONS, string $tzFormat = self::TZ_UTC)
+    public function __construct(\DateTime $dateTime = null, string $dateFormat = self::FORMAT_FRACTIONS, string $tzFormat = self::TZ_UTC)
     {
         parent::__construct($dateTime, $dateFormat, $tzFormat);
     }

@@ -68,7 +68,7 @@ class DerEncoder extends BerEncoder
     /**
      *{@inheritdoc}
      */
-    protected function getDecodedType(?int $tagType, bool $isConstructed, $bytes, array $tagMap) : AbstractType
+    protected function getDecodedType(int $tagType = null, bool $isConstructed, $bytes, array $tagMap) : AbstractType
     {
         $type = parent::getDecodedType($tagType, $isConstructed, $bytes, $tagMap);
         $this->validate($type);
@@ -103,7 +103,7 @@ class DerEncoder extends BerEncoder
      * @param AbstractType $type
      * @throws EncoderException
      */
-    protected function validate(AbstractType $type) : void
+    protected function validate(AbstractType $type)
     {
         if ($type instanceof OctetStringType && $type->getIsConstructed()) {
             throw new EncoderException('The octet string must be primitive. It cannot be constructed.');
@@ -118,4 +118,89 @@ class DerEncoder extends BerEncoder
             $this->validateTimeType($type);
         }
     }
+    
+    /**
+     * @param AbstractTimeType $type
+     * @throws EncoderException
+     */
+    protected function validateTimeType(AbstractTimeType $type)
+    {
+        if ($type->getTimeZoneFormat() !== AbstractTimeType::TZ_UTC) {
+            throw new EncoderException(sprintf(
+                'Time must end in a Z, but it does not. It is set to "%s".',
+                $type->getTimeZoneFormat()
+            ));
+        }
+        $dtFormat = $type->getDateTimeFormat();
+        if (!($dtFormat === AbstractTimeType::FORMAT_SECONDS || $dtFormat === AbstractTimeType::FORMAT_FRACTIONS)) {
+            throw new EncoderException(sprintf(
+                'Time must be specified to the seconds, but it is specified to "%s".',
+                $dtFormat
+            ));
+        }
+    } 
+    
+    /**
+     * X.680 Sec 8.4. A set is canonical when:
+     *    - Universal classes first.
+     *    - Application classes second.
+     *    - Context specific classes third.
+     *    - Private classes last.
+     *    - Within each group of classes above, tag numbers should be ordered in ascending order.
+     *
+     * @param AbstractType[] ...$set
+     * @return AbstractType[]
+     */
+    protected function canonicalize(AbstractType ...$set) : array
+    {
+        $children = [
+            AbstractType::TAG_CLASS_UNIVERSAL => [],
+            AbstractType::TAG_CLASS_APPLICATION => [],
+            AbstractType::TAG_CLASS_CONTEXT_SPECIFIC => [],
+            AbstractType::TAG_CLASS_PRIVATE => [],
+        ];
+
+        # Group them by their respective class type.
+        foreach ($set as $child) {
+            $children[$child->getTagClass()][] = $child;
+        }
+
+        # Sort the classes by tag number.
+        foreach ($children as $class => $type) {
+            usort($children[$class], function ($a, $b) {
+                /* @var AbstractType $a
+                 * @var AbstractType $b */
+                return ($a->getTagNumber() < $b->getTagNumber()) ? -1 : 1;
+            });
+        }
+
+        return array_merge(
+            $children[AbstractType::TAG_CLASS_UNIVERSAL],
+            $children[AbstractType::TAG_CLASS_APPLICATION],
+            $children[AbstractType::TAG_CLASS_CONTEXT_SPECIFIC],
+            $children[AbstractType::TAG_CLASS_PRIVATE]
+        );
+    }
+    
+    /**
+     * @param string $bytes
+     * @param int $length
+     * @param int $unused
+     * @return string
+     * @throws EncoderException
+     */
+    protected function binaryToBitString($bytes, int $length, int $unused) : string
+    {
+        $bytesOffsetNegativeByOne = substr($bytes, strlen($bytes) - 1);
+
+        //if ($unused && $length && ord($bytes[-1]) !== 0 && ((8 - $length) << ord($bytes[-1])) !== 0) {  Will not work in PHP  <= 7.0
+        if ($unused && $length && ord($bytesOffsetNegativeByOne) !== 0 && ((8 - $length) << ord($bytesOffsetNegativeByOne)) !== 0) {
+            throw new EncoderException(sprintf(
+                'The last %s unused bits of the bit string must be 0, but they are not.',
+                $unused
+            ));
+        }
+
+        return parent::binaryToBitString($bytes, $length, $unused);
+    }    
 }

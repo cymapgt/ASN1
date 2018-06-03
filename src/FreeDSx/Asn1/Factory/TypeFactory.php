@@ -150,7 +150,7 @@ class TypeFactory
      * @param int $type
      * @return null|string
      */
-    public static function getType(int $type) : ?string
+    public static function getType(int $type)
     {
         return self::hasType($type) ? self::$map[$type] : null;
     }

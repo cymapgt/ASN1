@@ -22,37 +22,37 @@ class AbstractTimeType extends AbstractType
     /**
      * Format the date time to the minutes.
      */
-    public const FORMAT_HOURS = 'hours';
+    const FORMAT_HOURS = 'hours';
 
     /**
      * Format the date time to the minutes.
      */
-    public const FORMAT_MINUTES = 'minutes';
+    const FORMAT_MINUTES = 'minutes';
 
     /**
      * Format the date time to the seconds.
      */
-    public const FORMAT_SECONDS = 'seconds';
+    const FORMAT_SECONDS = 'seconds';
 
     /**
      * Format the datetime to the fractional seconds if possible (empty fractionals not allowed), otherwise  to the seconds.
      */
-    public const FORMAT_FRACTIONS = 'fractions';
+    const FORMAT_FRACTIONS = 'fractions';
 
     /**
      * Use local time (ie. no ending timezone specification)
      */
-    public const TZ_LOCAL = 'local';
+    const TZ_LOCAL = 'local';
 
     /**
      * Use a UTC timezone (ie. end with a Z)
      */
-    public const TZ_UTC = 'utc';
+    const TZ_UTC = 'utc';
 
     /**
      * Use a timezone differential (ie. -0500)
      */
-    public const TZ_DIFF = 'diff';
+    const TZ_DIFF = 'diff';
 
     /**
      * @var string[] Valid datetime formats.
@@ -79,7 +79,7 @@ class AbstractTimeType extends AbstractType
      * @param string $dateFormat Represents the furthest datetime element to represent in the datetime object.
      * @param string $tzFormat Represents the format of the timezone.
      */
-    public function __construct(?\DateTime $dateTime = null, string $dateFormat, string $tzFormat)
+    public function __construct($dateTime = null, string $dateFormat, string $tzFormat)
     {
         $this->setDateTimeFormat($dateFormat);
         $this->setTimeZoneFormat($tzFormat);

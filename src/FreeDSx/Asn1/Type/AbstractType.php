@@ -17,74 +17,74 @@ namespace FreeDSx\Asn1\Type;
  */
 abstract class AbstractType implements \Countable, \IteratorAggregate
 {
-    public const TAG_CLASS_UNIVERSAL = 0x00;
+    const TAG_CLASS_UNIVERSAL = 0x00;
 
-    public const TAG_CLASS_CONTEXT_SPECIFIC = 0x80;
+    const TAG_CLASS_CONTEXT_SPECIFIC = 0x80;
 
-    public const TAG_CLASS_APPLICATION = 0x40;
+    const TAG_CLASS_APPLICATION = 0x40;
 
-    public const TAG_CLASS_PRIVATE = 0xC0;
+    const TAG_CLASS_PRIVATE = 0xC0;
 
-    public const TAG_TYPE_BOOLEAN = 0x01;
+    const TAG_TYPE_BOOLEAN = 0x01;
 
-    public const TAG_TYPE_INTEGER = 0x02;
+    const TAG_TYPE_INTEGER = 0x02;
 
-    public const TAG_TYPE_BIT_STRING = 0x03;
+    const TAG_TYPE_BIT_STRING = 0x03;
 
-    public const TAG_TYPE_OCTET_STRING = 0x04;
+    const TAG_TYPE_OCTET_STRING = 0x04;
 
-    public const TAG_TYPE_NULL = 0x05;
+    const TAG_TYPE_NULL = 0x05;
 
-    public const TAG_TYPE_OID = 0x06;
+    const TAG_TYPE_OID = 0x06;
 
-    public const TAG_TYPE_OBJECT_DESCRIPTOR = 0x07;
+    const TAG_TYPE_OBJECT_DESCRIPTOR = 0x07;
 
-    public const TAG_TYPE_EXTERNAL = 0x08;
+    const TAG_TYPE_EXTERNAL = 0x08;
 
-    public const TAG_TYPE_REAL = 0x09;
+    const TAG_TYPE_REAL = 0x09;
 
-    public const TAG_TYPE_ENUMERATED = 0x0A;
+    const TAG_TYPE_ENUMERATED = 0x0A;
 
-    public const TAG_TYPE_EMBEDDED_PDV = 0x0B;
+    const TAG_TYPE_EMBEDDED_PDV = 0x0B;
 
-    public const TAG_TYPE_UTF8_STRING = 0x0C;
+    const TAG_TYPE_UTF8_STRING = 0x0C;
 
-    public const TAG_TYPE_RELATIVE_OID = 0x0D;
+    const TAG_TYPE_RELATIVE_OID = 0x0D;
 
-    public const TAG_TYPE_SEQUENCE = 0x10;
+    const TAG_TYPE_SEQUENCE = 0x10;
 
-    public const TAG_TYPE_SET = 0x11;
+    const TAG_TYPE_SET = 0x11;
 
-    public const TAG_TYPE_NUMERIC_STRING = 0x12;
+    const TAG_TYPE_NUMERIC_STRING = 0x12;
 
-    public const TAG_TYPE_PRINTABLE_STRING = 0x13;
+    const TAG_TYPE_PRINTABLE_STRING = 0x13;
 
-    public const TAG_TYPE_TELETEX_STRING = 0x14;
+    const TAG_TYPE_TELETEX_STRING = 0x14;
 
-    public const TAG_TYPE_VIDEOTEX_STRING = 0x15;
+    const TAG_TYPE_VIDEOTEX_STRING = 0x15;
 
-    public const TAG_TYPE_IA5_STRING = 0x16;
+    const TAG_TYPE_IA5_STRING = 0x16;
 
-    public const TAG_TYPE_UTC_TIME = 0x17;
+    const TAG_TYPE_UTC_TIME = 0x17;
 
-    public const TAG_TYPE_GENERALIZED_TIME = 0x18;
+    const TAG_TYPE_GENERALIZED_TIME = 0x18;
 
-    public const TAG_TYPE_GRAPHIC_STRING = 0x19;
+    const TAG_TYPE_GRAPHIC_STRING = 0x19;
 
-    public const TAG_TYPE_VISIBLE_STRING = 0x1A;
+    const TAG_TYPE_VISIBLE_STRING = 0x1A;
 
-    public const TAG_TYPE_GENERAL_STRING = 0x1B;
+    const TAG_TYPE_GENERAL_STRING = 0x1B;
 
-    public const TAG_TYPE_UNIVERSAL_STRING = 0x1C;
+    const TAG_TYPE_UNIVERSAL_STRING = 0x1C;
 
-    public const TAG_TYPE_CHARACTER_STRING = 0x1D;
+    const TAG_TYPE_CHARACTER_STRING = 0x1D;
 
-    public const TAG_TYPE_BMP_STRING = 0x1E;
+    const TAG_TYPE_BMP_STRING = 0x1E;
 
     /**
      * Used in the tag to denote a constructed type.
      */
-    public const CONSTRUCTED_TYPE = 0x20;
+    const CONSTRUCTED_TYPE = 0x20;
 
     /**
      * @var mixed
@@ -165,7 +165,7 @@ abstract class AbstractType implements \Countable, \IteratorAggregate
     /**
      * @return int|null
      */
-    public function getTagNumber() : ?int
+    public function getTagNumber()
     {
         return $this->tagNumber;
     }
@@ -174,7 +174,7 @@ abstract class AbstractType implements \Countable, \IteratorAggregate
      * @param int|null $int
      * @return $this
      */
-    public function setTagNumber(?int $int)
+    public function setTagNumber(int $int = null)
     {
         $this->tagNumber = $int;
 
@@ -184,7 +184,7 @@ abstract class AbstractType implements \Countable, \IteratorAggregate
     /**
      * @return null|string
      */
-    public function getTrailingData() : ?string
+    public function getTrailingData()
     {
         return $this->trailingData;
     }
@@ -240,7 +240,7 @@ abstract class AbstractType implements \Countable, \IteratorAggregate
      * @param int $index
      * @return null|AbstractType
      */
-    public function getChild(int $index) : ?AbstractType
+    public function getChild(int $index)
     {
         return $this->children[$index] ?? null;
     }

@@ -20,7 +20,7 @@ class UtcTimeType extends AbstractTimeType
     /**
      * Only a 2 day year (was Y2K not a thing back then?), seconds are optional, Z or time differential.
      */
-    public const TIME_REGEX = '~^
+    const TIME_REGEX = '~^
         (\d\d)                # 1 - Year
         (\d\d)                # 2 - Month
         (\d\d)                # 3 - Day
@@ -30,7 +30,7 @@ class UtcTimeType extends AbstractTimeType
         (Z|[\+\-]\d\d\d\d)    # 7 - Timezone modifier (not optional). It can either be a Z (UTC) or a time differential.
     $~x';
 
-    public const REGEX_MAP = [
+    const REGEX_MAP = [
         'hours' => 4,
         'minutes' => 5,
         'seconds' => 6,
@@ -58,7 +58,7 @@ class UtcTimeType extends AbstractTimeType
     /**
      * {@inheritdoc}
      */
-    public function __construct(?\DateTime $dateTime = null, string $dateFormat = self::FORMAT_SECONDS, string $tzFormat = self::TZ_UTC)
+    public function __construct(\DateTime $dateTime = null, string $dateFormat = self::FORMAT_SECONDS, string $tzFormat = self::TZ_UTC)
     {
         parent::__construct($dateTime, $dateFormat, $tzFormat);
     }

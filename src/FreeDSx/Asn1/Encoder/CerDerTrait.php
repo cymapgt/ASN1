@@ -31,7 +31,7 @@ trait CerDerTrait
      */
     protected function binaryToBitString($bytes, int $length, int $unused) : string
     {
-        if ($unused && $length && ord($bytes[-1]) !== 0 && ((8 - $length) << ord($bytes[-1])) !== 0) {
+        if ($unused && $length && ord($bytesOffsetNegativeByOne) !== 0 && ((8 - $length) << ord($bytesOffsetNegativeByOne)) !== 0) {
             throw new EncoderException(sprintf(
                 'The last %s unused bits of the bit string must be 0, but they are not.',
                 $unused
@@ -77,7 +77,8 @@ trait CerDerTrait
     protected function validateDateFormat(array $matches, array $matchMap)
     {
         if (isset($matchMap['fractions']) && isset($matches[$matchMap['fractions']]) && $matches[$matchMap['fractions']] !== '') {
-            if ($matches[$matchMap['fractions']][-1] === '0') {
+            $matchMapItemNegativeOffsetByOne = substr($matches[$matchMap['fractions']], strlen($matches[$matchMap['fractions']]) - 1, 1);
+            if ($matchMapItemNegativeOffsetByOne === '0') {
                 throw new EncoderException('Trailing zeros must be omitted from Generalized Time types, but it is not.');
             }
         }

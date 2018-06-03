@@ -68,7 +68,7 @@ class BitStringType extends AbstractType
      * @param int|null $minLength
      * @return BitStringType
      */
-    public static function fromBinary($bytes, ?int $minLength = null)
+    public static function fromBinary($bytes, int $minLength = null)
     {
         $bitstring = '';
 
@@ -90,7 +90,7 @@ class BitStringType extends AbstractType
      * @param int|null $minLength
      * @return BitStringType
      */
-    public static function fromInteger(int $int, ?int $minLength = null)
+    public static function fromInteger(int $int, int $minLength = null)
     {
         $pieces = str_split(decbin($int), 8);
         $num = count($pieces);
