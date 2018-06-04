@@ -20,6 +20,13 @@
     "php": ">=7.0"
   },
   "require-dev": {
+    "symfony/console": "^3.2",
+    "symfony/event-dispatcher": "^3.2",
+    "symfony/process": "^3.2",
+    "symfony/finder": "^3.2",        
+    "symfony/yaml": "^3.2",        
+    "symfony/debug": "^3.2",  
+    "symfony/filesystem": "^3.2",          
     "phpspec/phpspec": "^4.0"
   },
   "config": {
